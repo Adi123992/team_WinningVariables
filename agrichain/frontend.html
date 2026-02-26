@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KisanMitra — Smart Farming Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --soil:#2D1B0E; --earth:#5C3D1E; --harvest:#E8B84B;
+  --leaf:#3D7A3D; --leaf-light:#5BA55B; --cream:#FDF6E3;
+  --rust:#C0392B; --success:#27AE60; --warn:#E67E22;
+  --text:#1A0F0A; --muted:#7A6655; --nav-h:64px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'Source Sans 3',sans-serif;color:var(--text)}
+
+/* ════ NAVBAR ════ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);
+  background:var(--soil);display:flex;align-items:center;padding:0 32px;
+  box-shadow:0 2px 20px rgba(0,0,0,0.3);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;cursor:pointer}
+.nav-logo{width:40px;height:40px;background:var(--harvest);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 10px rgba(228,184,75,0.4)}
+.nav-brand-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--harvest);font-weight:900}
+.nav-brand-sub{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1.5px;text-transform:uppercase;line-height:1}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{
+  padding:8px 14px;border-radius:8px;border:none;background:transparent;
+  color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:'Source Sans 3',sans-serif;
+}
+.nav-link:hover,.nav-link.active{background:rgba(228,184,75,0.15);color:var(--harvest)}
+.nav-cta{
+  margin-left:12px;padding:8px 18px;background:var(--harvest);color:var(--soil);
+  border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .2s;font-family:'Source Sans 3',sans-serif;
+}
+.nav-cta:hover{background:#F5D76E;transform:translateY(-1px)}
+.nav-lang{display:flex;gap:5px;margin-left:14px}
+.lang-btn{
+  padding:5px 11px;border-radius:16px;border:1px solid rgba(255,255,255,0.2);
+  background:transparent;color:rgba(255,255,255,0.6);cursor:pointer;font-size:12px;
+  transition:all .2s;font-family:'Source Sans 3',sans-serif;
+}
+.lang-btn.active{background:var(--harvest);color:var(--soil);border-color:var(--harvest);font-weight:700}
+
+/* ════ HERO ════ */
+.hero-band{
+  background:linear-gradient(135deg,var(--leaf) 0%,#1E4A1E 100%);
+  padding:calc(var(--nav-h) + 48px) 40px 72px;
+  position:relative;overflow:hidden;
+}
+.hero-band::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:50px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%)}
+.hero-band::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M40 10 Q50 25 40 40 Q30 25 40 10Z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+}
+.hero-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;position:relative;z-index:1}
+.hero-h1{font-family:'Playfair Display',serif;font-size:50px;color:#fff;line-height:1.15;margin-bottom:16px}
+.hero-h1 span{color:var(--harvest)}
+.hero-p{color:rgba(255,255,255,0.82);font-size:16px;line-height:1.75;margin-bottom:28px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{padding:13px 26px;background:var(--harvest);color:var(--soil);border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.btn-primary:hover{background:#F5D76E;transform:translateY(-2px);box-shadow:0 6px 20px rgba(228,184,75,0.4)}
+.btn-outline{padding:13px 26px;background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.4);border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,0.08)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.stat-box{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.13);border-radius:12px;padding:14px;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--harvest)}
+.stat-lbl{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.hero-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:30px;padding:6px 13px;color:#fff;font-size:12px;font-weight:600}
+.feature-cards{display:flex;flex-direction:column;gap:12px}
+.feat-card{background:rgba(255,255,255,0.09);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:13px}
+.feat-icon{font-size:24px;flex-shrink:0}
+.feat-card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
+.feat-card p{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.45}
+
+/* ════ SECTION WRAPPER ════ */
+.sec-wrap{max-width:1180px;margin:0 auto;padding:70px 24px}
+.sec-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--soil);margin-bottom:6px}
+.sec-sub{color:var(--muted);font-size:14px;margin-bottom:32px}
+
+/* ════ ANALYZER ════ */
+#analyzer{scroll-margin-top:var(--nav-h)}
+.input-card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 2px 24px rgba(45,27,14,0.08);border:1px solid rgba(45,27,14,0.06);margin-bottom:28px}
+.card-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--soil);margin-bottom:3px;display:flex;align-items:center;gap:9px}
+.card-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:16px;margin-bottom:20px}
+.form-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--earth);margin-bottom:5px}
+.form-group select,.form-group input{width:100%;padding:10px 13px;border:2px solid rgba(45,27,14,0.1);border-radius:10px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s;cursor:pointer}
+.form-group select:focus,.form-group input:focus{border-color:var(--leaf)}
+.analyze-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--leaf),#1E4A1E);color:#fff;border:none;border-radius:12px;font-family:'Source Sans 3',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s}
+.analyze-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(61,122,61,0.4)}
+
+/* results */
+.results-section{display:none}
+.results-section.visible{display:block;animation:fadeUp .5s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.kpi-card{background:#fff;border-radius:16px;padding:22px;text-align:center;box-shadow:0 2px 14px rgba(45,27,14,0.06);border:1px solid rgba(45,27,14,0.06);position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0}
+.kpi-card.g::before{background:linear-gradient(90deg,var(--leaf),var(--leaf-light))}
+.kpi-card.o::before{background:linear-gradient(90deg,var(--warn),#F39C12)}
+.kpi-card.b::before{background:linear-gradient(90deg,#2980B9,#3498DB)}
+.kpi-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:7px}
+.kpi-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;line-height:1;margin-bottom:4px}
+.kpi-card.g .kpi-val{color:var(--leaf)}.kpi-card.o .kpi-val{color:var(--warn)}.kpi-card.b .kpi-val{color:#2980B9}
+.kpi-desc{font-size:12px;color:var(--muted)}
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.mod-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 14px rgba(45,27,14,0.06);border:1px solid rgba(45,27,14,0.06)}
+.mod-hdr{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.mod-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mod-icon.g{background:rgba(61,122,61,0.1)}.mod-icon.o{background:rgba(230,126,34,0.1)}.mod-icon.b{background:rgba(41,128,185,0.1)}.mod-icon.r{background:rgba(192,57,43,0.1)}
+.mod-hdr-t h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--soil)}
+.mod-hdr-t p{font-size:11px;color:var(--muted)}
+.timeline-track{height:7px;background:rgba(45,27,14,0.08);border-radius:4px;position:relative;margin-bottom:5px}
+.timeline-fill{position:absolute;top:0;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--leaf-light),var(--harvest))}
+.timeline-marker{position:absolute;top:50%;transform:translateY(-50%);width:13px;height:13px;background:var(--harvest);border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(228,184,75,0.5)}
+.tl-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.harvest-rec{background:linear-gradient(135deg,rgba(61,122,61,0.06),rgba(61,122,61,0.02));border:1.5px solid rgba(61,122,61,0.2);border-radius:11px;padding:13px;margin-top:11px}
+.rec-main{font-size:17px;font-weight:700;color:var(--leaf);margin-bottom:3px}
+.rec-sub{font-size:12px;color:var(--muted);line-height:1.5}
+.flist{display:flex;flex-direction:column;gap:6px;margin-top:9px}
+.fi{display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:7px;background:rgba(45,27,14,0.03);font-size:12px}
+.fi.good{border-left:3px solid var(--success)}.fi.warn{border-left:3px solid var(--warn)}.fi.bad{border-left:3px solid var(--rust)}
+.fdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fi.good .fdot{background:var(--success)}.fi.warn .fdot{background:var(--warn)}.fi.bad .fdot{background:var(--rust)}
+.mkt-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:7px}
+.mkt-tbl th{text-align:left;padding:6px 8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);border-bottom:2px solid rgba(45,27,14,0.08)}
+.mkt-tbl td{padding:8px 8px;border-bottom:1px solid rgba(45,27,14,0.05);vertical-align:middle}
+.mkt-tbl tr.br{background:rgba(61,122,61,0.05)}
+.best-badge{background:var(--leaf);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;text-transform:uppercase;margin-left:4px}
+.pbar-wrap{display:flex;align-items:center;gap:5px}
+.pbar{height:5px;border-radius:3px;background:var(--leaf)}
+.gauge-wrap{display:flex;align-items:center;gap:16px;margin:10px 0 13px}
+.gauge-c{width:84px;height:84px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}
+.gauge-c svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.gauge-n{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;position:relative;z-index:1;line-height:1}
+.gauge-p{font-size:10px;color:var(--muted);position:relative;z-index:1}
+.gauge-t h4{font-size:14px;font-weight:700;margin-bottom:3px}
+.gauge-t p{font-size:12px;color:var(--muted);line-height:1.4}
+.act-list{display:flex;flex-direction:column;gap:7px}
+.act-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:9px;border:1px solid rgba(45,27,14,0.08);background:rgba(253,246,227,0.5);transition:all .2s}
+.act-item:hover{background:rgba(61,122,61,0.05);border-color:rgba(61,122,61,0.2)}
+.act-rank{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.act-rank.r1{background:rgba(39,174,96,0.15);color:var(--success)}.act-rank.r2{background:rgba(52,152,219,0.15);color:#2980B9}.act-rank.r3{background:rgba(230,126,34,0.15);color:var(--warn)}
+.act-body{flex:1}
+.act-name{font-size:13px;font-weight:600;color:var(--soil)}
+.act-detail{font-size:11px;color:var(--muted)}
+.act-cost{font-size:11px;font-weight:700;color:var(--earth);white-space:nowrap}
+.dots{display:flex;gap:3px}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(45,27,14,0.15)}
+.dot.f{background:var(--leaf)}
+.why-card{background:var(--soil);border-radius:20px;padding:28px;margin-top:16px;position:relative;overflow:hidden}
+.why-card::before{content:'"';position:absolute;top:-20px;right:28px;font-family:'Playfair Display',serif;font-size:180px;color:rgba(255,255,255,0.03);pointer-events:none;line-height:1}
+.reason-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:13px;margin-top:16px}
+.reason-step{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:17px}
+.rs-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:rgba(228,184,75,0.3);line-height:1;margin-bottom:6px}
+.rs-title{font-size:13px;font-weight:700;color:var(--harvest);margin-bottom:4px}
+.rs-desc{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5}
+.conf-banner{background:rgba(228,184,75,0.1);border:1px solid rgba(228,184,75,0.25);border-radius:11px;padding:12px 15px;display:flex;align-items:center;gap:12px;margin-top:14px}
+.conf-t h4{font-size:12px;font-weight:700;color:var(--harvest);margin-bottom:2px}
+.conf-t p{font-size:11px;color:rgba(255,255,255,0.55);line-height:1.4}
+.conf-bar-o{width:85px;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;margin-bottom:3px}
+.conf-bar-i{height:100%;background:linear-gradient(90deg,var(--harvest),#F5D76E);border-radius:3px}
+.conf-pct{font-size:11px;font-weight:700;color:var(--harvest)}
+
+/* ════ ABOUT ════ */
+#about{background:#fff;scroll-margin-top:var(--nav-h)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:36px}
+.about-txt h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--soil);margin-bottom:12px}
+.about-txt p{color:var(--muted);line-height:1.8;margin-bottom:12px;font-size:14px}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.ab-card{background:var(--cream);border-radius:13px;padding:18px;border:1px solid rgba(45,27,14,0.07)}
+.ab-icon{font-size:26px;margin-bottom:9px}
+.ab-card h4{font-size:13px;font-weight:700;color:var(--soil);margin-bottom:4px}
+.ab-card p{font-size:12px;color:var(--muted);line-height:1.5}
+.mission-strip{margin-top:44px;padding-top:36px;border-top:1px solid rgba(45,27,14,0.08);text-align:center}
+.mission-strip h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--soil);margin-bottom:12px}
+.mission-strip p{color:var(--muted);max-width:580px;margin:0 auto 28px;font-size:14px;line-height:1.75}
+.team-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.team-c{text-align:center}
+.team-av{width:66px;height:66px;border-radius:50%;margin:0 auto 9px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.team-c h4{font-size:13px;font-weight:700;color:var(--soil)}
+.team-c p{font-size:11px;color:var(--muted)}
+
+/* ════ SCHEMES ════ */
+#schemes{scroll-margin-top:var(--nav-h)}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.fbtn{padding:7px 15px;border-radius:20px;border:2px solid rgba(45,27,14,0.12);background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.fbtn.active,.fbtn:hover{border-color:var(--leaf);background:rgba(61,122,61,0.08);color:var(--leaf)}
+.schemes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.scheme-c{background:#fff;border-radius:16px;padding:22px;border:1px solid rgba(45,27,14,0.07);border-left:4px solid var(--leaf);box-shadow:0 2px 12px rgba(45,27,14,0.05);transition:all .2s;cursor:pointer}
+.scheme-c:hover{transform:translateY(-3px);box-shadow:0 8px 26px rgba(45,27,14,0.1)}
+.sch-badge{display:inline-block;padding:3px 9px;border-radius:18px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:11px}
+.sch-badge.central{background:rgba(41,128,185,0.12);color:#2471A3}
+.sch-badge.state{background:rgba(39,174,96,0.12);color:#1E8449}
+.sch-badge.credit{background:rgba(230,126,34,0.12);color:#BA4A00}
+.scheme-c h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--soil);margin-bottom:7px}
+.scheme-c p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.sch-benefit{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--leaf)}
+.sch-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.sch-tag{background:rgba(61,122,61,0.08);color:var(--leaf);font-size:11px;padding:2px 7px;border-radius:5px;font-weight:600}
+.sch-link{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:12px;font-weight:700;color:var(--leaf);text-decoration:none}
+
+/* ════ LOADING ════ */
+.loading-overlay{position:fixed;inset:0;background:rgba(45,27,14,0.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:500}
+.loading-overlay.active{display:flex}
+.loading-box{background:#fff;border-radius:20px;padding:36px 44px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.spin{width:54px;height:54px;border:4px solid rgba(61,122,61,0.15);border-top-color:var(--leaf);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ls-list{list-style:none;text-align:left;margin-top:13px}
+.ls-list li{font-size:13px;color:var(--muted);padding:3px 0 3px 20px;position:relative}
+.ls-list li::before{content:'○';position:absolute;left:0;color:var(--muted)}
+.ls-list li.done::before{content:'✓';color:var(--leaf)}
+.ls-list li.active::before{content:'◉';color:var(--harvest)}
+
+/* ════ CHATBOT ════ */
+.chat-fab{
+  position:fixed;bottom:28px;right:28px;z-index:300;
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--leaf),#1E4A1E);
+  border:none;cursor:pointer;box-shadow:0 6px 22px rgba(61,122,61,0.5);
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  transition:all .3s;animation:fabP 3s ease-in-out infinite;
+}
+@keyframes fabP{0%,100%{box-shadow:0 6px 22px rgba(61,122,61,0.5)}50%{box-shadow:0 6px 34px rgba(61,122,61,0.8)}}
+.chat-fab:hover{transform:scale(1.1)}
+.fab-label{
+  position:fixed;bottom:36px;right:98px;z-index:300;
+  background:var(--soil);color:var(--harvest);font-size:12px;font-weight:700;
+  padding:5px 11px;border-radius:18px;white-space:nowrap;pointer-events:none;
+  box-shadow:0 3px 12px rgba(0,0,0,0.2);
+}
+.chat-win{
+  position:fixed;bottom:98px;right:28px;z-index:300;
+  width:355px;height:510px;background:#fff;border-radius:20px;
+  box-shadow:0 20px 60px rgba(45,27,14,0.2);display:none;flex-direction:column;
+  overflow:hidden;border:1px solid rgba(45,27,14,0.1);
+}
+.chat-win.open{display:flex;animation:chatO .3s ease}
+@keyframes chatO{from{opacity:0;transform:translateY(18px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-hdr{background:linear-gradient(135deg,var(--leaf),#1E4A1E);padding:14px 18px;display:flex;align-items:center;gap:11px}
+.chat-av{width:38px;height:38px;border-radius:50%;background:var(--harvest);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.chat-hdr-t h4{font-size:14px;font-weight:700;color:#fff}
+.chat-hdr-t p{font-size:11px;color:rgba(255,255,255,0.7)}
+.chat-dot{width:8px;height:8px;border-radius:50%;background:#2ECC71;margin-left:auto}
+.chat-x{background:rgba(255,255,255,0.15);border:none;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px}
+.cmsg{max-width:84%}
+.cmsg.bot{align-self:flex-start}.cmsg.user{align-self:flex-end}
+.cbubble{padding:9px 13px;border-radius:13px;font-size:13px;line-height:1.5}
+.cmsg.bot .cbubble{background:var(--cream);color:var(--text);border:1px solid rgba(45,27,14,0.08);border-radius:4px 13px 13px 13px}
+.cmsg.user .cbubble{background:var(--leaf);color:#fff;border-radius:13px 4px 13px 13px}
+.ctime{font-size:10px;color:var(--muted);margin-top:2px}
+.cmsg.user .ctime{text-align:right}
+.quick-btns{display:flex;flex-wrap:wrap;gap:5px;padding:8px 14px 0}
+.qbtn{padding:5px 10px;border-radius:13px;border:1px solid rgba(61,122,61,0.25);background:rgba(61,122,61,0.06);color:var(--leaf);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Source Sans 3',sans-serif}
+.qbtn:hover{background:var(--leaf);color:#fff}
+.typing-row{display:none;padding:0 14px 0}
+.typing-row.vis{display:flex}
+.tbubble{background:var(--cream);border:1px solid rgba(45,27,14,0.08);border-radius:4px 13px 13px 13px;padding:9px 13px;display:flex;gap:4px;align-items:center}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:tb 1.4s infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
+.chat-inp-row{padding:10px 14px;border-top:1px solid rgba(45,27,14,0.08);display:flex;gap:7px;align-items:center}
+.chat-inp{flex:1;padding:8px 12px;border:2px solid rgba(45,27,14,0.1);border-radius:18px;font-family:'Source Sans 3',sans-serif;font-size:13px;outline:none;transition:border-color .2s;background:var(--cream)}
+.chat-inp:focus{border-color:var(--leaf)}
+.chat-send{width:34px;height:34px;border-radius:50%;background:var(--leaf);border:none;color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.chat-send:hover{background:#2D5A2D;transform:scale(1.05)}
+
+/* ════ FOOTER ════ */
+footer{background:var(--soil);padding:36px 24px;text-align:center}
+.f-logo{font-family:'Playfair Display',serif;font-size:22px;color:var(--harvest);font-weight:900;margin-bottom:8px}
+.f-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px}
+.f-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-bottom:18px}
+.f-links a{color:rgba(255,255,255,0.6);font-size:13px;text-decoration:none}
+.f-links a:hover{color:var(--harvest)}
+.f-copy{font-size:11px;color:rgba(255,255,255,0.3)}
+
+@media(max-width:900px){
+  .hero-inner,.about-grid{grid-template-columns:1fr}.feature-cards{display:none}
+  .kpi-row,.mod-grid,.reason-grid{grid-template-columns:1fr}
+  .chat-win{width:calc(100vw - 28px);right:14px}
+  .nav-links{display:none}
+  .team-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .hero-h1{font-size:34px}.hero-stats,.about-cards{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-brand" onclick="gotoSec('home')">
+    <div class="nav-logo">🌾</div>
+    <div>
+      <div class="nav-brand-name">KisanMitra</div>
+      <div class="nav-brand-sub">Smart Farming Platform</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="gotoSec('home',this)">🏠 Home</button>
+    <button class="nav-link" onclick="gotoSec('analyzer',this)">🔍 Analyzer</button>
+    <button class="nav-link" onclick="gotoSec('about',this)">ℹ️ About</button>
+    <button class="nav-link" onclick="gotoSec('schemes',this)">🏛️ Govt Schemes</button>
+  </div>
+  <button class="nav-cta" onclick="gotoSec('analyzer',null)">⚡ Free Analysis</button>
+  <div class="nav-lang">
+    <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+    <button class="lang-btn" onclick="setLang('hi',this)">हि</button>
+  </div>
+</nav>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spin"></div>
+    <h3 style="font-family:'Playfair Display',serif;color:var(--soil);margin-bottom:4px">Analyzing your crop…</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Pulling real-time data from multiple sources</p>
+    <ul class="ls-list" id="lsList">
+      <li class="active" id="ls1">Fetching weather forecast (7-day)</li>
+      <li id="ls2">Reading soil health indicators</li>
+      <li id="ls3">Scanning mandi price history (90-day)</li>
+      <li id="ls4">Calculating optimal harvest window</li>
+      <li id="ls5">Assessing spoilage risk & storage</li>
+      <li id="ls6">Ranking best markets by net profit</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════ HOME ════ -->
+<section id="home" style="scroll-margin-top:var(--nav-h)">
+  <div class="hero-band">
+    <div class="hero-inner">
+      <div>
+        <h1 class="hero-h1">Smart Farming,<br><span>Better Earnings</span><br>for Every Kisan</h1>
+        <p class="hero-p">India's AI-powered farm-to-market platform. Know exactly <strong>when to harvest</strong>, <strong>where to sell</strong>, and <strong>how to store</strong> — in plain language, in your language.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="gotoSec('analyzer',null)">⚡ Get Free Analysis</button>
+          <button class="btn-outline" onclick="gotoSec('schemes',null)">🏛️ View Govt Schemes</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box"><div class="stat-num">500+</div><div class="stat-lbl">Mandi Prices Tracked</div></div>
+          <div class="stat-box"><div class="stat-num">40%</div><div class="stat-lbl">Avg Waste Reduction</div></div>
+          <div class="stat-box"><div class="stat-num">9</div><div class="stat-lbl">Crops Supported</div></div>
+        </div>
+        <div class="hero-pills">
+          <div class="hero-pill">🌡️ Live Weather</div>
+          <div class="hero-pill">📈 Real Mandi Data</div>
+          <div class="hero-pill">✅ Explainable AI</div>
+          <div class="hero-pill">🗣️ Hindi Support</div>
+        </div>
+      </div>
+      <div class="feature-cards">
+        <div class="feat-card"><div class="feat-icon">🌾</div><div><h4>Harvest Window Advisor</h4><p>Weather + soil data combined to find your perfect 4-day harvest window.</p></div></div>
+        <div class="feat-card"><div class="feat-icon">🏪</div><div><h4>Best Mandi Finder</h4><p>Net profit after transport — not just the highest price. Real data from 500+ markets.</p></div></div>
+        <div class="feat-card"><div class="feat-icon">📦</div><div><h4>Spoilage Risk Guard</h4><p>Post-harvest spoilage predicted. Preservation actions ranked by cost-effectiveness.</p></div></div>
+        <div class="feat-card"><div class="feat-icon">🤖</div><div><h4>Annadata AI Chat</h4><p>Ask farming questions in Hindi or English. Your personal advisor, 24×7.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ANALYZER ════ -->
+<section id="analyzer">
+  <div class="sec-wrap">
+    <div class="sec-title">🔍 Crop Intelligence Analyzer</div>
+    <div class="sec-sub">Enter your crop details — get harvest timing, best market, spoilage risk & preservation advice in seconds</div>
+
+    <div class="input-card">
+      <div class="card-title"><span>🌱</span> Tell us about your crop</div>
+      <div class="card-sub">All fields are used to give you the most accurate, personalised recommendation</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Crop Type</label>
+          <select id="cropType">
+            <option value="tomato">🍅 Tomato (टमाटर)</option>
+            <option value="wheat">🌾 Wheat (गेहूं)</option>
+            <option value="rice">🍚 Rice (चावल)</option>
+            <option value="onion">🧅 Onion (प्याज)</option>
+            <option value="potato">🥔 Potato (आलू)</option>
+            <option value="soybean">🫘 Soybean (सोयाबीन)</option>
+            <option value="cotton">🌸 Cotton (कपास)</option>
+            <option value="maize">🌽 Maize (मक्का)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <select id="state">
+            <option value="maharashtra">Maharashtra</option>
+            <option value="punjab">Punjab</option>
+            <option value="uttar_pradesh">Uttar Pradesh</option>
+            <option value="madhya_pradesh">Madhya Pradesh</option>
+            <option value="rajasthan">Rajasthan</option>
+            <option value="karnataka">Karnataka</option>
+            <option value="gujarat">Gujarat</option>
+            <option value="haryana">Haryana</option>
+            <option value="andhra_pradesh">Andhra Pradesh</option>
+            <option value="telangana">Telangana</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>District / Mandi Area</label>
+          <select id="district">
+            <option value="nashik">Nashik</option>
+            <option value="pune">Pune</option>
+            <option value="nagpur">Nagpur</option>
+            <option value="amravati">Amravati</option>
+            <option value="kolhapur">Kolhapur</option>
+            <option value="aurangabad">Aurangabad</option>
+            <option value="indore">Indore</option>
+            <option value="bhopal">Bhopal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Harvest Stage</label>
+          <select id="harvestStage">
+            <option value="15days">Ready in ~15 days</option>
+            <option value="7days">Ready in ~7 days</option>
+            <option value="ready">Ready now</option>
+            <option value="overdue">Slightly overdue</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Storage Available</label>
+          <select id="storage">
+            <option value="none">No cold storage</option>
+            <option value="warehouse">Warehouse (dry)</option>
+            <option value="cold">Cold storage</option>
+            <option value="home">Home storage</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Land Size (acres)</label>
+          <input type="number" id="landSize" value="2.5" min="0.5" step="0.5">
+        </div>
+      </div>
+      <button class="analyze-btn" onclick="runAnalysis()">⚡ Get My Recommendations — Free</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results-section" id="resultsSection">
+      <div class="kpi-row">
+        <div class="kpi-card g"><div class="kpi-lbl">Best Harvest Window</div><div class="kpi-val" id="harvestDateVal">—</div><div class="kpi-desc" id="harvestDaysVal">—</div></div>
+        <div class="kpi-card o"><div class="kpi-lbl">Spoilage Risk</div><div class="kpi-val" id="spoilageVal">—</div><div class="kpi-desc" id="spoilageDescVal">—</div></div>
+        <div class="kpi-card b"><div class="kpi-lbl">Expected Net Profit</div><div class="kpi-val" id="profitVal">—</div><div class="kpi-desc" id="profitDescVal">—</div></div>
+      </div>
+      <div class="mod-grid">
+        <!-- Harvest -->
+        <div class="mod-card">
+          <div class="mod-hdr"><div class="mod-icon g">🌾</div><div class="mod-hdr-t"><h3>Optimal Harvest Window</h3><p>Based on weather + crop maturity</p></div></div>
+          <div style="padding:8px 0">
+            <div class="timeline-track"><div class="timeline-fill" style="left:38%;width:26%"></div><div class="timeline-marker" style="left:51%"></div></div>
+            <div class="tl-labels"><span>Today</span><span id="tl2">+5d</span><span id="tl3" style="color:var(--harvest);font-weight:700">Best ⭐</span><span id="tl4">+20d</span></div>
+          </div>
+          <div class="harvest-rec"><div class="rec-main" id="harvestRec">—</div><div class="rec-sub" id="harvestRecSub">—</div></div>
+          <div class="flist" id="harvestFactors"></div>
+        </div>
+        <!-- Markets -->
+        <div class="mod-card">
+          <div class="mod-hdr"><div class="mod-icon b">🏪</div><div class="mod-hdr-t"><h3>Best Market to Sell</h3><p>Price vs transport cost analysis</p></div></div>
+          <table class="mkt-tbl"><thead><tr><th>Mandi</th><th>Price/kg</th><th>Transport</th><th>Net Profit</th></tr></thead><tbody id="mktBody"></tbody></table>
+          <div id="trendAlert" style="margin-top:10px"></div>
+        </div>
+        <!-- Spoilage -->
+        <div class="mod-card">
+          <div class="mod-hdr"><div class="mod-icon o">⚠️</div><div class="mod-hdr-t"><h3>Post-Harvest Spoilage Risk</h3><p>Storage + transit analysis</p></div></div>
+          <div class="gauge-wrap">
+            <div class="gauge-c">
+              <svg viewBox="0 0 84 84" width="84" height="84">
+                <circle cx="42" cy="42" r="34" fill="none" stroke="rgba(45,27,14,0.08)" stroke-width="7"/>
+                <circle id="gaugeArc" cx="42" cy="42" r="34" fill="none" stroke="#E67E22" stroke-width="7" stroke-dasharray="213.6" stroke-dashoffset="141" stroke-linecap="round"/>
+              </svg>
+              <span class="gauge-n" id="gaugeN" style="color:#E67E22">—</span>
+              <span class="gauge-p">risk</span>
+            </div>
+            <div class="gauge-t"><h4 id="gaugeL" style="color:#E67E22">—</h4><p id="gaugeD">—</p></div>
+          </div>
+          <div class="flist" id="spoilageFacts"></div>
+        </div>
+        <!-- Actions -->
+        <div class="mod-card">
+          <div class="mod-hdr"><div class="mod-icon r">🛡️</div><div class="mod-hdr-t"><h3>Preservation Actions</h3><p>Ranked by cost-effectiveness</p></div></div>
+          <div class="act-list" id="actList"></div>
+        </div>
+      </div>
+      <!-- WHY PANEL -->
+      <div class="why-card">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:3px">
+          <span style="font-size:19px">🤔</span>
+          <span style="font-family:'Playfair Display',serif;font-size:19px;color:var(--harvest);font-weight:700">Why did we recommend this?</span>
+        </div>
+        <div style="color:rgba(255,255,255,0.5);font-size:12px;margin-bottom:2px">Every recommendation comes with a full explanation — because trust matters as much as accuracy</div>
+        <div class="reason-grid" id="reasonGrid"></div>
+        <div class="conf-banner">
+          <span style="font-size:19px">🎯</span>
+          <div class="conf-t"><h4 id="confTitle">—</h4><p id="confBasis">—</p></div>
+          <div style="margin-left:auto;flex-shrink:0;text-align:right">
+            <div class="conf-bar-o"><div class="conf-bar-i" id="confBar" style="width:0%"></div></div>
+            <div class="conf-pct" id="confPct">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ABOUT ════ -->
+<section id="about">
+  <div class="sec-wrap">
+    <div class="sec-title">ℹ️ About KisanMitra</div>
+    <div class="sec-sub">Built to solve India's farm-to-market intelligence gap</div>
+    <div class="about-grid">
+      <div class="about-txt">
+        <h3>The Problem We're Solving</h3>
+        <p>India's farmers lose up to <strong>40% of produce</strong> not because of poor farming — but poor timing and market mismatch. A farmer in Nashik may harvest tomatoes the same day 200 others do, crashing mandi prices.</p>
+        <p>KisanMitra combines real weather data, soil health indicators, and live mandi price history to recommend the <strong>optimal harvest window</strong> and <strong>best target market</strong> for every crop and region.</p>
+        <p>Every recommendation is explained in plain language — because a farmer must <em>trust</em> advice before acting on it, especially when their livelihood is at stake.</p>
+      </div>
+      <div class="about-cards">
+        <div class="ab-card"><div class="ab-icon">🌦️</div><h4>Weather Intelligence</h4><p>7-day IMD-based forecasts integrated into every harvest recommendation.</p></div>
+        <div class="ab-card"><div class="ab-icon">📊</div><h4>Real Mandi Data</h4><p>AGMARKNET price data from 500+ mandis across India, updated daily.</p></div>
+        <div class="ab-card"><div class="ab-icon">🧪</div><h4>Soil Health Aware</h4><p>Crop maturity windows calibrated with soil moisture and nutrient data.</p></div>
+        <div class="ab-card"><div class="ab-icon">🗣️</div><h4>Built for Farmers</h4><p>Plain language, Hindi support — works on a basic Android phone.</p></div>
+      </div>
+    </div>
+    <div class="mission-strip">
+      <h3>Our Mission</h3>
+      <p>Technology should work <em>for</em> the farmer, not the other way around. We design every feature asking: <em>"Can a farmer with a basic Android phone understand and trust this?"</em></p>
+      <div class="team-row">
+        <div class="team-c"><div class="team-av" style="background:rgba(61,122,61,0.1)">👨‍💻</div><h4>AI/ML Team</h4><p>Harvest & price models</p></div>
+        <div class="team-c"><div class="team-av" style="background:rgba(41,128,185,0.1)">📊</div><h4>Data Team</h4><p>Mandi & weather pipelines</p></div>
+        <div class="team-c"><div class="team-av" style="background:rgba(230,126,34,0.1)">🎨</div><h4>Design Team</h4><p>Farmer-first UX</p></div>
+        <div class="team-c"><div class="team-av" style="background:rgba(192,57,43,0.1)">🌾</div><h4>Agri Advisors</h4><p>Domain validation</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ GOVT SCHEMES ════ -->
+<section id="schemes">
+  <div class="sec-wrap">
+    <div class="sec-title">🏛️ Government Farmer Schemes</div>
+    <div class="sec-sub">Central & state schemes you may be eligible for — updated 2024–25</div>
+    <div class="filter-row">
+      <button class="fbtn active" onclick="filterS('all',this)">All Schemes</button>
+      <button class="fbtn" onclick="filterS('central',this)">🏛️ Central Govt</button>
+      <button class="fbtn" onclick="filterS('state',this)">🗺️ State Govt</button>
+      <button class="fbtn" onclick="filterS('credit',this)">💳 Credit & Insurance</button>
+    </div>
+    <div class="schemes-grid" id="schemesGrid"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:1180px;margin:0 auto">
+    <div class="f-logo">🌾 KisanMitra</div>
+    <div class="f-sub">Smart Farming Platform — Farm-to-Market Intelligence</div>
+    <div class="f-links">
+      <a href="#" onclick="gotoSec('home',null)">Home</a>
+      <a href="#" onclick="gotoSec('analyzer',null)">Analyzer</a>
+      <a href="#" onclick="gotoSec('about',null)">About</a>
+      <a href="#" onclick="gotoSec('schemes',null)">Schemes</a>
+      <a href="https://enam.gov.in" target="_blank">e-NAM</a>
+      <a href="https://pmkisan.gov.in" target="_blank">PM-KISAN</a>
+    </div>
+    <div class="f-copy">© 2025 KisanMitra. Built with ❤️ for Indian Farmers. | Data: AGMARKNET, IMD | Backend: AgriChain API</div>
+  </div>
+</footer>
+
+<!-- ════ ANNADATA AI CHATBOT ════ -->
+<div class="fab-label">Annadata AI 🌾</div>
+<button class="chat-fab" onclick="toggleChat()" title="Ask Annadata AI">🤖</button>
+<div class="chat-win" id="chatWin">
+  <div class="chat-hdr">
+    <div class="chat-av">🤖</div>
+    <div class="chat-hdr-t"><h4>Annadata AI</h4><p>Your personal crop advisor</p></div>
+    <div class="chat-dot"></div>
+    <button class="chat-x" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="cmsg bot">
+      <div class="cbubble">🙏 Namaste! I'm <strong>Annadata AI</strong> — your personal farming assistant.<br><br>Ask me anything about crops, mandi prices, weather timing, or government schemes. Hindi or English — both work! 🌾</div>
+      <div class="ctime">Now</div>
+    </div>
+  </div>
+  <div class="quick-btns" id="quickBtns">
+    <button class="qbtn" onclick="quickAsk('Best time to sell tomatoes?')">🍅 Tomato prices</button>
+    <button class="qbtn" onclick="quickAsk('PM Kisan scheme details')">🏛️ PM Kisan</button>
+    <button class="qbtn" onclick="quickAsk('How to reduce crop spoilage?')">📦 Spoilage tips</button>
+    <button class="qbtn" onclick="quickAsk('When should I harvest wheat?')">🌾 Wheat harvest</button>
+  </div>
+  <div class="typing-row" id="typingRow">
+    <div class="tbubble"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>
+  </div>
+  <div class="chat-inp-row">
+    <input class="chat-inp" id="chatInp" placeholder="Ask Annadata AI anything…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────────────────────────────────
+const API_BASE = window.API_BASE || 'http://localhost:8000';
+
+// ── Nav ────────────────────────────────────────────────────────────────────────
+function gotoSec(id, btn) {
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+  if(btn){ document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active')); btn.classList.add('active'); }
+}
+let currentLang='en';
+
+// ── Full Hindi/English translation dictionary ──────────────────────────────────
+const T={
+  en:{
+    navHome:'🏠 Home',navAnalyzer:'🔍 Analyzer',navAbout:'ℹ️ About',navSchemes:'🏛️ Govt Schemes',navCta:'⚡ Free Analysis',
+    heroH1:'Smart Farming,<br><span>Better Earnings</span><br>for Every Kisan',
+    heroP:"India's AI-powered farm-to-market platform. Know exactly <strong>when to harvest</strong>, <strong>where to sell</strong>, and <strong>how to store</strong> — in plain language, in your language.",
+    heroBtnA:'⚡ Get Free Analysis',heroBtnB:'🏛️ View Govt Schemes',
+    s1:'Mandi Prices Tracked',s2:'Avg Waste Reduction',s3:'Crops Supported',
+    p1:'🌡️ Live Weather',p2:'📈 Real Mandi Data',p3:'✅ Explainable AI',p4:'🗣️ Hindi Support',
+    f1h:'Harvest Window Advisor',f1p:'Weather + soil data combined to find your perfect 4-day harvest window.',
+    f2h:'Best Mandi Finder',f2p:'Net profit after transport — not just the highest price. Real data from 500+ markets.',
+    f3h:'Spoilage Risk Guard',f3p:'Post-harvest spoilage predicted. Preservation actions ranked by cost-effectiveness.',
+    f4h:'Annadata AI Chat',f4p:'Ask farming questions in Hindi or English. Your personal advisor, 24×7.',
+    secA1:'🔍 Crop Intelligence Analyzer',secA2:'Enter your crop details — get harvest timing, best market, spoilage risk & preservation advice in seconds',
+    cTitle:'🌱 Tell us about your crop',cSub:'All fields are used to give you the most accurate, personalised recommendation',
+    lCrop:'Crop Type',lState:'State',lDistrict:'District / Mandi Area',lStage:'Harvest Stage',lStorage:'Storage Available',lLand:'Land Size (acres)',
+    btnA:'⚡ Get My Recommendations — Free',
+    k1:'Best Harvest Window',k2:'Spoilage Risk',k3:'Expected Net Profit',
+    m1h:'Optimal Harvest Window',m1s:'Based on weather + crop maturity',
+    m2h:'Best Market to Sell',m2s:'Price vs transport cost analysis',
+    m3h:'Post-Harvest Spoilage Risk',m3s:'Storage + transit analysis',
+    m4h:'Preservation Actions',m4s:'Ranked by cost-effectiveness',
+    whyT:'Why did we recommend this?',whyS:'Every recommendation comes with a full explanation — because trust matters as much as accuracy',
+    secB1:'ℹ️ About KisanMitra',secB2:"Built to solve India's farm-to-market intelligence gap",
+    a1h:'Weather Intelligence',a1p:'7-day IMD-based forecasts integrated into every harvest recommendation.',
+    a2h:'Real Mandi Data',a2p:'AGMARKNET price data from 500+ mandis across India, updated daily.',
+    a3h:'Soil Health Aware',a3p:'Crop maturity windows calibrated with soil moisture and nutrient data.',
+    a4h:'Built for Farmers',a4p:'Plain language, Hindi support — works on a basic Android phone.',
+    msT:'Our Mission',msP:'Technology should work <em>for</em> the farmer, not the other way around. We design every feature asking: <em>"Can a farmer with a basic Android phone understand and trust this?"</em>',
+    t1:'AI/ML Team',t1p:'Harvest & price models',t2:'Data Team',t2p:'Mandi & weather pipelines',t3:'Design Team',t3p:'Farmer-first UX',t4:'Agri Advisors',t4p:'Domain validation',
+    secC1:'🏛️ Government Farmer Schemes',secC2:'Central & state schemes you may be eligible for — updated 2024–25',
+    fb1:'All Schemes',fb2:'🏛️ Central Govt',fb3:'🗺️ State Govt',fb4:'💳 Credit & Insurance',
+    schLink:'Learn more & Apply →',
+    ls1:'Fetching weather forecast (7-day)',ls2:'Reading soil health indicators',ls3:'Scanning mandi price history (90-day)',
+    ls4:'Calculating optimal harvest window',ls5:'Assessing spoilage risk & storage',ls6:'Ranking best markets by net profit',
+    ldT:'Analyzing your crop…',ldS:'Pulling real-time data from multiple sources',
+    chatN:'Annadata AI',chatS:'Your personal crop advisor',chatP:'Ask Annadata AI anything…',
+    fabL:'Annadata AI 🌾',
+    q1:'🍅 Tomato prices',q2:'🏛️ PM Kisan',q3:'📦 Spoilage tips',q4:'🌾 Wheat harvest',
+    footC:'© 2025 KisanMitra. Built with ❤️ for Indian Farmers. | Data: AGMARKNET, IMD',
+    chatWelcome:"🙏 Namaste! I'm <strong>Annadata AI</strong> — your personal farming assistant.<br><br>Ask me anything about crops, mandi prices, weather timing, or government schemes. Hindi or English — both work! 🌾",
+  },
+  hi:{
+    navHome:'🏠 होम',navAnalyzer:'🔍 विश्लेषक',navAbout:'ℹ️ हमारे बारे में',navSchemes:'🏛️ सरकारी योजनाएं',navCta:'⚡ मुफ्त विश्लेषण',
+    heroH1:'स्मार्ट खेती,<br><span>बेहतर कमाई</span><br>हर किसान के लिए',
+    heroP:'भारत का AI-आधारित कृषि प्लेटफॉर्म। जानें — <strong>कब काटें</strong>, <strong>कहाँ बेचें</strong>, और <strong>कैसे स्टोर करें</strong> — सरल भाषा में।',
+    heroBtnA:'⚡ मुफ्त विश्लेषण करें',heroBtnB:'🏛️ सरकारी योजनाएं देखें',
+    s1:'मंडी भाव ट्रैक',s2:'औसत बर्बादी कमी',s3:'फसलें समर्थित',
+    p1:'🌡️ लाइव मौसम',p2:'📈 असली मंडी डेटा',p3:'✅ समझने योग्य AI',p4:'🗣️ हिंदी समर्थन',
+    f1h:'कटाई विंडो सलाहकार',f1p:'मौसम और मिट्टी डेटा से आपकी सही 4-दिन कटाई विंडो खोजें।',
+    f2h:'सबसे अच्छी मंडी खोजें',f2p:'परिवहन के बाद शुद्ध लाभ — सिर्फ ज़्यादा कीमत नहीं। 500+ मंडियों का डेटा।',
+    f3h:'खराबी जोखिम गार्ड',f3p:'कटाई के बाद खराबी का अनुमान। लागत अनुसार संरक्षण कार्य रैंक।',
+    f4h:'अन्नदाता AI चैट',f4p:'हिंदी या अंग्रेजी में खेती के सवाल पूछें। आपका व्यक्तिगत सलाहकार, 24×7।',
+    secA1:'🔍 फसल बुद्धिमत्ता विश्लेषक',secA2:'अपनी फसल की जानकारी दें — कटाई का समय, सबसे अच्छी मंडी, खराबी जोखिम और संरक्षण सलाह पाएं',
+    cTitle:'🌱 अपनी फसल के बारे में बताएं',cSub:'सबसे सटीक सिफारिश देने के लिए सभी जानकारी जरूरी है',
+    lCrop:'फसल का प्रकार',lState:'राज्य',lDistrict:'जिला / मंडी क्षेत्र',lStage:'कटाई की स्थिति',lStorage:'उपलब्ध भंडारण',lLand:'भूमि का आकार (एकड़)',
+    btnA:'⚡ मेरी सिफारिशें पाएं — मुफ्त',
+    k1:'सबसे अच्छी कटाई विंडो',k2:'खराबी जोखिम',k3:'अपेक्षित शुद्ध लाभ',
+    m1h:'सर्वोत्तम कटाई विंडो',m1s:'मौसम और फसल परिपक्वता के आधार पर',
+    m2h:'बेचने के लिए सबसे अच्छी मंडी',m2s:'कीमत बनाम परिवहन लागत विश्लेषण',
+    m3h:'कटाई के बाद खराबी जोखिम',m3s:'भंडारण और पारगमन विश्लेषण',
+    m4h:'संरक्षण कार्य',m4s:'लागत-प्रभावशीलता के अनुसार रैंक',
+    whyT:'हमने यह क्यों सुझाया?',whyS:'हर सिफारिश के पीछे का कारण दिखाते हैं — क्योंकि विश्वास उतना ही जरूरी है जितनी सटीकता',
+    secB1:'ℹ️ KisanMitra के बारे में',secB2:'भारत के कृषि-से-बाज़ार की खुफिया कमी को दूर करने के लिए बनाया गया',
+    a1h:'मौसम बुद्धिमत्ता',a1p:'हर कटाई सिफारिश में 7-दिन IMD-आधारित पूर्वानुमान।',
+    a2h:'असली मंडी डेटा',a2p:'भारत में 500+ मंडियों से AGMARKNET मूल्य डेटा, दैनिक अपडेट।',
+    a3h:'मिट्टी स्वास्थ्य जागरूक',a3p:'मिट्टी की नमी और पोषक तत्व डेटा के साथ कैलिब्रेट।',
+    a4h:'किसानों के लिए बनाया',a4p:'सरल भाषा, हिंदी समर्थन — बेसिक Android फोन पर काम करता है।',
+    msT:'हमारा मिशन',msP:'तकनीक किसान <em>के लिए</em> काम करनी चाहिए। हम हर सुविधा यह पूछकर डिज़ाइन करते हैं: <em>"क्या बेसिक Android फोन वाला किसान इसे समझ और भरोसा कर सकता है?"</em>',
+    t1:'AI/ML टीम',t1p:'कटाई और मूल्य मॉडल',t2:'डेटा टीम',t2p:'मंडी और मौसम पाइपलाइन',t3:'डिज़ाइन टीम',t3p:'किसान-प्रथम UX',t4:'कृषि सलाहकार',t4p:'डोमेन सत्यापन',
+    secC1:'🏛️ सरकारी किसान योजनाएं',secC2:'केंद्र और राज्य सरकार की योजनाएं — 2024–25 अपडेटेड',
+    fb1:'सभी योजनाएं',fb2:'🏛️ केंद्र सरकार',fb3:'🗺️ राज्य सरकार',fb4:'💳 ऋण और बीमा',
+    schLink:'अधिक जानें और आवेदन करें →',
+    ls1:'मौसम पूर्वानुमान लोड हो रहा है (7-दिन)',ls2:'मिट्टी स्वास्थ्य संकेतक पढ़े जा रहे हैं',ls3:'मंडी मूल्य इतिहास स्कैन हो रहा है (90-दिन)',
+    ls4:'सर्वोत्तम कटाई विंडो की गणना',ls5:'खराबी जोखिम और भंडारण का आकलन',ls6:'शुद्ध लाभ के अनुसार सबसे अच्छी मंडियां रैंक',
+    ldT:'आपकी फसल का विश्लेषण हो रहा है…',ldS:'कई स्रोतों से रियल-टाइम डेटा लोड हो रहा है',
+    chatN:'अन्नदाता AI',chatS:'आपका व्यक्तिगत फसल सलाहकार',chatP:'अन्नदाता AI से कुछ भी पूछें…',
+    fabL:'अन्नदाता AI 🌾',
+    q1:'🍅 टमाटर भाव',q2:'🏛️ PM किसान',q3:'📦 खराबी कम करें',q4:'🌾 गेहूं कटाई',
+    footC:'© 2025 KisanMitra. ❤️ से भारतीय किसानों के लिए बनाया गया | डेटा: AGMARKNET, IMD',
+    chatWelcome:"🙏 नमस्ते! मैं <strong>अन्नदाता AI</strong> हूँ — आपका व्यक्तिगत खेती सहायक।<br><br>फसल, मंडी भाव, कटाई का सही समय, या सरकारी योजनाओं के बारे में कुछ भी पूछें। हिंदी या अंग्रेजी — दोनों चलते हैं! 🌾",
+  }
+};
+
+function applyLang(lang){
+  const L=T[lang];
+  // Navbar
+  const nl=document.querySelectorAll('.nav-link');
+  if(nl[0])nl[0].textContent=L.navHome; if(nl[1])nl[1].textContent=L.navAnalyzer;
+  if(nl[2])nl[2].textContent=L.navAbout; if(nl[3])nl[3].textContent=L.navSchemes;
+  const nc=document.querySelector('.nav-cta'); if(nc)nc.textContent=L.navCta;
+  // Hero
+  const h1=document.querySelector('.hero-h1'); if(h1)h1.innerHTML=L.heroH1;
+  const hp=document.querySelector('.hero-p'); if(hp)hp.innerHTML=L.heroP;
+  const hb=document.querySelectorAll('.hero-btns button');
+  if(hb[0])hb[0].textContent=L.heroBtnA; if(hb[1])hb[1].textContent=L.heroBtnB;
+  const sl=document.querySelectorAll('.stat-lbl');
+  if(sl[0])sl[0].textContent=L.s1; if(sl[1])sl[1].textContent=L.s2; if(sl[2])sl[2].textContent=L.s3;
+  const pl=document.querySelectorAll('.hero-pill');
+  [L.p1,L.p2,L.p3,L.p4].forEach((v,i)=>{if(pl[i])pl[i].textContent=v;});
+  const fh=document.querySelectorAll('.feat-card h4'),fp=document.querySelectorAll('.feat-card p');
+  [[L.f1h,L.f1p],[L.f2h,L.f2p],[L.f3h,L.f3p],[L.f4h,L.f4p]].forEach(([h,p],i)=>{
+    if(fh[i])fh[i].textContent=h; if(fp[i])fp[i].textContent=p;
+  });
+  // Analyzer section
+  const st=document.querySelectorAll('.sec-title'),ss=document.querySelectorAll('.sec-sub');
+  if(st[0])st[0].textContent=L.secA1; if(ss[0])ss[0].textContent=L.secA2;
+  const ct=document.querySelector('.card-title'); if(ct)ct.innerHTML='<span>🌱</span> '+L.cTitle.replace('🌱 ','');
+  const csb=document.querySelector('.card-sub'); if(csb)csb.textContent=L.cSub;
+  const lbs=document.querySelectorAll('.form-group label');
+  [L.lCrop,L.lState,L.lDistrict,L.lStage,L.lStorage,L.lLand].forEach((v,i)=>{if(lbs[i])lbs[i].textContent=v;});
+  const ab=document.querySelector('.analyze-btn'); if(ab)ab.textContent=L.btnA;
+  const kl=document.querySelectorAll('.kpi-lbl');
+  if(kl[0])kl[0].textContent=L.k1; if(kl[1])kl[1].textContent=L.k2; if(kl[2])kl[2].textContent=L.k3;
+  const mh=document.querySelectorAll('.mod-hdr-t h3'),ms=document.querySelectorAll('.mod-hdr-t p');
+  [[L.m1h,L.m1s],[L.m2h,L.m2s],[L.m3h,L.m3s],[L.m4h,L.m4s]].forEach(([h,p],i)=>{
+    if(mh[i])mh[i].textContent=h; if(ms[i])ms[i].textContent=p;
+  });
+  // Why panel title/sub
+  const wtEls=document.querySelectorAll('.why-card > div:first-child span');
+  wtEls.forEach(el=>{if(el.style.fontFamily&&el.style.fontFamily.includes('Playfair'))el.textContent=L.whyT;});
+  const wsSel=document.querySelector('.why-card > div:nth-child(2)');
+  if(wsSel)wsSel.textContent=L.whyS;
+  // About
+  if(st[1])st[1].textContent=L.secB1; if(ss[1])ss[1].textContent=L.secB2;
+  const ah=document.querySelectorAll('.ab-card h4'),ap=document.querySelectorAll('.ab-card p');
+  [[L.a1h,L.a1p],[L.a2h,L.a2p],[L.a3h,L.a3p],[L.a4h,L.a4p]].forEach(([h,p],i)=>{
+    if(ah[i])ah[i].textContent=h; if(ap[i])ap[i].textContent=p;
+  });
+  const msEl=document.querySelector('.mission-strip h3'); if(msEl)msEl.textContent=L.msT;
+  const msPEl=document.querySelector('.mission-strip > p'); if(msPEl)msPEl.innerHTML=L.msP;
+  const th=document.querySelectorAll('.team-c h4'),tp=document.querySelectorAll('.team-c p');
+  [[L.t1,L.t1p],[L.t2,L.t2p],[L.t3,L.t3p],[L.t4,L.t4p]].forEach(([h,p],i)=>{
+    if(th[i])th[i].textContent=h; if(tp[i])tp[i].textContent=p;
+  });
+  // Schemes section
+  if(st[2])st[2].textContent=L.secC1; if(ss[2])ss[2].textContent=L.secC2;
+  const fb=document.querySelectorAll('.fbtn');
+  if(fb[0])fb[0].textContent=L.fb1; if(fb[1])fb[1].textContent=L.fb2;
+  if(fb[2])fb[2].textContent=L.fb3; if(fb[3])fb[3].textContent=L.fb4;
+  // Loading overlay
+  const lsIds=['ls1','ls2','ls3','ls4','ls5','ls6'];
+  lsIds.forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=L[id];});
+  const ldT=document.querySelector('.loading-box h3'); if(ldT)ldT.textContent=L.ldT;
+  const ldS=document.querySelector('.loading-box > p'); if(ldS)ldS.textContent=L.ldS;
+  // Chat UI
+  const chn=document.querySelector('.chat-hdr-t h4'); if(chn)chn.textContent=L.chatN;
+  const chs=document.querySelector('.chat-hdr-t p'); if(chs)chs.textContent=L.chatS;
+  const chi=document.getElementById('chatInp'); if(chi)chi.placeholder=L.chatP;
+  const fl=document.querySelector('.fab-label'); if(fl)fl.textContent=L.fabL;
+  const qb=document.querySelectorAll('.qbtn');
+  [L.q1,L.q2,L.q3,L.q4].forEach((v,i)=>{if(qb[i])qb[i].textContent=v;});
+  // Footer
+  const fc=document.querySelector('.f-copy'); if(fc)fc.textContent=L.footC;
+  // Footer links text (Home/About etc)
+  const fls=document.querySelectorAll('.f-links a');
+  if(fls[0])fls[0].textContent=lang==='hi'?'होम':'Home';
+  if(fls[1])fls[1].textContent=lang==='hi'?'विश्लेषक':'Analyzer';
+  if(fls[2])fls[2].textContent=lang==='hi'?'हमारे बारे में':'About';
+  if(fls[3])fls[3].textContent=lang==='hi'?'योजनाएं':'Schemes';
+  // Re-render schemes with translated link text
+  renderSchemes(currentFilter);
+  // Add language switch message to chat
+  addMsg('bot', L.chatWelcome);
+}
+
+function setLang(lang,btn){
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentLang=lang;
+  applyLang(lang);
+}
+
+// ── Schemes data ───────────────────────────────────────────────────────────────
+const SCHEMES=[
+  {t:'central',n:'PM-KISAN — Pradhan Mantri Kisan Samman Nidhi',d:'Direct income support of ₹6,000/year to eligible farmer families in three equal installments of ₹2,000 each. Over 11 crore farmers benefited.',b:'₹6,000/year per family',tags:['All Farmers','Direct Benefit'],link:'https://pmkisan.gov.in/'},
+  {t:'credit', n:'Pradhan Mantri Fasal Bima Yojana (PMFBY)',d:'Crop insurance providing financial support for crop loss due to natural calamities, pests & diseases. Premium as low as 1.5–2% for farmers.',b:'Up to full sum insured on crop loss',tags:['Kharif','Rabi','Commercial'],link:'https://pmfby.gov.in/'},
+  {t:'credit', n:'Kisan Credit Card (KCC)',d:'Timely access to credit for agricultural needs at 4% effective interest rate. Apply at any bank or cooperative society with land records.',b:'Up to ₹3 lakh @ 4% interest',tags:['Credit','Insurance','Flexible'],link:'https://www.nabard.org/content1.aspx?id=572&catid=23&mid=530'},
+  {t:'central',n:'Paramparagat Krishi Vikas Yojana (PKVY)',d:'Promotes organic farming through cluster approach. Financial assistance of ₹50,000/hectare over 3 years for inputs, certification, and marketing.',b:'₹50,000/hectare over 3 years',tags:['Organic','Cluster','Certification'],link:'https://pgsindia-ncof.gov.in/pkvy/Index.aspx'},
+  {t:'central',n:'Sub-Mission on Agricultural Mechanisation (SMAM)',d:'Subsidy on agricultural machinery. Up to 50% subsidy for small and marginal farmers on tractors, harvesters, power tillers and other implements.',b:'Up to 50% machinery subsidy',tags:['Equipment','Machinery','Tractor'],link:'https://agrimachinery.nic.in/'},
+  {t:'central',n:'Soil Health Card Scheme',d:'Free soil testing for every farmer. Provides crop-wise recommendations for fertilizers and micronutrients to improve productivity and reduce input costs.',b:'Free soil testing + nutrient card',tags:['Soil','Free','Nutrition'],link:'https://soilhealth.dac.gov.in/'},
+  {t:'state',  n:'State Disaster Relief Fund (SDRF)',d:'Compensation for crop loss from natural disasters — drought, flood, hailstorm, cyclone, pest attack. Apply through local tehsildar or agriculture office.',b:'₹8,500–13,500/hectare compensation',tags:['Disaster','Natural Calamity','Compensation'],link:'https://ndma.gov.in/Natural-Hazards/Floods'},
+  {t:'central',n:'e-NAM — National Agriculture Market',d:'Online trading platform connecting farmers directly to buyers across India. Better price discovery, reduced middlemen, transparent auction system.',b:'Direct access to 1,000+ mandis',tags:['Market','Digital','Price Discovery'],link:'https://enam.gov.in/web/'},
+  {t:'central',n:'mKisan Portal — SMS Advisory',d:'SMS-based advisory service for real-time crop advisory, pest/disease alerts, and market prices directly to farmers\' mobile phones in regional languages.',b:'Free SMS crop advisories',tags:['Mobile','Advisory','Free'],link:'https://mkisan.gov.in/'},
+  {t:'central',n:'Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)',d:'Ensures water to every field (Har Khet Ko Pani) and improves water use efficiency (More Crop Per Drop). Subsidy on drip and sprinkler irrigation.',b:'55–90% subsidy on micro-irrigation',tags:['Irrigation','Water','Drip'],link:'https://pmksy.gov.in/'},
+  {t:'central',n:'Rashtriya Krishi Vikas Yojana (RKVY)',d:'Incentivises states to increase public investment in agriculture. Supports agriculture infrastructure, post-harvest management and agri-business.',b:'Grants for agri infrastructure',tags:['Infrastructure','Investment','Post-Harvest'],link:'https://rkvy.nic.in/'},
+  {t:'credit', n:'Agriculture Infrastructure Fund (AIF)',d:'Financing facility for post-harvest management infrastructure and community farming assets. Interest subvention of 3% per annum for 7 years.',b:'3% interest subvention up to ₹2 crore',tags:['Storage','Warehouse','Cold Chain'],link:'https://agriinfra.dac.gov.in/'},
+];
+let currentFilter='all';
+function renderSchemes(f='all'){
+  currentFilter=f;
+  const L=T[currentLang];
+  const g=document.getElementById('schemesGrid');
+  const arr=f==='all'?SCHEMES:SCHEMES.filter(s=>s.t===f);
+  const badgeEN={central:'🏛️ Central Govt',state:'🗺️ State Govt',credit:'💳 Credit & Insurance'};
+  const badgeHI={central:'🏛️ केंद्र सरकार',state:'🗺️ राज्य सरकार',credit:'💳 ऋण और बीमा'};
+  const badges=currentLang==='hi'?badgeHI:badgeEN;
+  g.innerHTML=arr.map(s=>`
+    <div class="scheme-c" data-type="${s.t}">
+      <div class="sch-badge ${s.t}">${badges[s.t]}</div>
+      <h3>${s.n}</h3><p>${s.d}</p>
+      <div class="sch-benefit">✅ ${s.b}</div>
+      <div class="sch-tags">${s.tags.map(tag=>`<span class="sch-tag">${tag}</span>`).join('')}</div>
+      <a class="sch-link" href="${s.link}" target="_blank" rel="noopener noreferrer">${L.schLink}</a>
+    </div>`).join('');
+}
+function filterS(f,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSchemes(f);
+}
+renderSchemes();
+
+// ── Loading ─────────────────────────────────────────────────────────────────────
+function startLoading(cb){
+  const ov=document.getElementById('loadingOverlay');ov.classList.add('active');
+  const steps=['ls1','ls2','ls3','ls4','ls5','ls6'];
+  steps.forEach(s=>{const e=document.getElementById(s);e.classList.remove('active','done');});
+  document.getElementById('ls1').classList.add('active');
+  let i=0;
+  function tick(){
+    if(i>0){document.getElementById(steps[i-1]).classList.remove('active');document.getElementById(steps[i-1]).classList.add('done');}
+    if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;setTimeout(tick,440+Math.random()*300);}
+    else{setTimeout(()=>{ov.classList.remove('active');if(cb)cb();},280);}
+  }
+  tick();
+}
+
+// ── Run analysis ────────────────────────────────────────────────────────────────
+async function runAnalysis(){
+  const p={
+    crop_type:    document.getElementById('cropType').value,
+    state:        document.getElementById('state').value,
+    district:     document.getElementById('district').value,
+    harvest_stage:document.getElementById('harvestStage').value,
+    storage_type: document.getElementById('storage').value,
+    land_size:    parseFloat(document.getElementById('landSize').value)||2.5,
+  };
+  let d=null,err=null;
+  const fp=fetch(`${API_BASE}/analyze`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)})
+    .then(r=>{if(!r.ok)return r.json().then(e=>{throw new Error(e.detail||'API error '+r.status)});return r.json();})
+    .then(x=>{d=x}).catch(e=>{err=e});
+  startLoading(async()=>{
+    await fp;
+    if(err){
+      document.getElementById('loadingOverlay').classList.remove('active');
+      alert('⚠️ Could not get recommendations:\n'+err.message+'\n\nStart the API server first:\n  uvicorn main:app --reload --port 8000\n\nThen refresh this page.');
+    } else renderResults(d);
+  });
+}
+
+// ── Render ──────────────────────────────────────────────────────────────────────
+function renderResults(d){
+  // KPIs
+  document.getElementById('harvestDateVal').textContent=d.harvest_date_val;
+  document.getElementById('harvestDaysVal').textContent=d.harvest_days_val;
+  document.getElementById('spoilageVal').textContent=d.spoilage_val;
+  document.getElementById('spoilageDescVal').textContent=d.spoilage_desc_val;
+  document.getElementById('profitVal').textContent=d.profit_val;
+  document.getElementById('profitDescVal').textContent=d.profit_desc_val;
+  // Harvest
+  document.getElementById('harvestRec').textContent=d.harvest_window.recommendation;
+  document.getElementById('harvestRecSub').textContent=d.harvest_window.recommendation_sub;
+  document.getElementById('harvestFactors').innerHTML=(d.harvest_window.factors||[]).map(f=>
+    `<div class="fi ${f.type}"><div class="fdot"></div><span>${f.text}</span></div>`).join('');
+  // Markets
+  document.getElementById('mktBody').innerHTML=d.markets.map(m=>`
+    <tr ${m.is_best?'class="br"':''}><td><strong>${m.name}</strong>${m.is_best?'<span class="best-badge">Best</span>':''}</td>
+    <td style="font-weight:700;color:var(--leaf)">${m.price_display}</td><td>${m.transport_display}</td>
+    <td><div class="pbar-wrap"><div class="pbar" style="width:${m.bar_width}px;background:${m.profit_color}"></div>
+    <span style="font-weight:700;font-size:11px;color:${m.profit_color}">${m.net_profit_display}</span></div></td></tr>`).join('');
+  const bm=d.markets[0];
+  document.getElementById('trendAlert').innerHTML=`<div style="padding:10px;background:rgba(41,128,185,0.06);border-radius:9px;border:1px solid rgba(41,128,185,0.15)"><div style="font-size:11px;font-weight:700;color:#2980B9;margin-bottom:2px">📊 Price Trend</div><div style="font-size:12px;color:var(--muted)">${bm.name}: ${bm.trend}. Sell within 2–3 days of harvest.</div></div>`;
+  // Gauge
+  const sr=d.spoilage_risk;
+  const rc=sr.risk_color.replace('var(--warn)','#E67E22').replace('var(--rust)','#C0392B').replace('var(--success)','#27AE60');
+  // Recalculate dashoffset for r=34 circle: circumference = 2π×34 ≈ 213.6
+  const circ=213.6; const offset=circ*(1-sr.risk_pct/100);
+  document.getElementById('gaugeArc').setAttribute('stroke',rc);
+  document.getElementById('gaugeArc').setAttribute('stroke-dashoffset',offset.toFixed(1));
+  document.getElementById('gaugeN').textContent=sr.risk_pct+'%'; document.getElementById('gaugeN').style.color=rc;
+  document.getElementById('gaugeL').textContent=sr.risk_level+' Risk'; document.getElementById('gaugeL').style.color=rc;
+  document.getElementById('gaugeD').textContent=sr.description;
+  document.getElementById('spoilageFacts').innerHTML=(sr.factors||[]).map(f=>`<div class="fi ${f.type}"><div class="fdot"></div><span>${f.text}</span></div>`).join('');
+  // Actions
+  document.getElementById('actList').innerHTML=(d.preservation_actions||[]).map(a=>{
+    const ds=Array.from({length:5},(_,i)=>`<div class="dot${i<a.effectiveness?' f':''}"></div>`).join('');
+    return `<div class="act-item"><div class="act-rank ${a.rank_class}">${a.rank}</div><div class="act-body"><div class="act-name">${a.title}</div><div class="act-detail">${a.detail}</div></div><div style="text-align:right"><div class="act-cost">${a.cost_display}</div><div class="dots" style="justify-content:flex-end;margin-top:3px">${ds}</div></div></div>`;
+  }).join('');
+  // Why
+  document.getElementById('reasonGrid').innerHTML=(d.reasoning_steps||[]).map(s=>
+    `<div class="reason-step"><div class="rs-num">${s.step_num}</div><div class="rs-title">${s.icon} ${s.title}</div><div class="rs-desc">${s.desc}</div></div>`).join('');
+  document.getElementById('confTitle').textContent=`Prediction Confidence: ${d.confidence.score}%`;
+  document.getElementById('confBasis').textContent=d.confidence.basis;
+  document.getElementById('confBar').style.width=d.confidence.score+'%';
+  document.getElementById('confPct').textContent=d.confidence.label;
+  // Show
+  const res=document.getElementById('resultsSection');
+  res.classList.add('visible');
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ════ ANNADATA AI — REAL-TIME CLAUDE API WITH STREAMING ════════════════════════
+
+let chatHistory = [];
+let isStreaming  = false;
+
+const SYSTEM_PROMPT = `You are Annadata AI (अन्नदाता AI), a warm and expert Indian farming assistant built into KisanMitra — India's smart farm-to-market platform.
+
+Your knowledge covers:
+- All major Indian crops: tomato, wheat, rice, onion, potato, soybean, cotton, maize, chickpea, sugarcane, banana, mango, chilli, groundnut, mustard
+- Mandi prices, APMC markets, e-NAM, MSP (Minimum Support Price) for 2024-25
+- Harvest timing, crop maturity signs, post-harvest handling, cold storage
+- Seasonal price trends, best time to sell, market selection strategy
+- Government schemes: PM-KISAN, PMFBY (Fasal Bima), KCC (Kisan Credit Card), PKVY, SMAM, Soil Health Card, RKVY, AIF, e-NAM, PMKSY, mKisan
+- Soil health, fertilizers (NPK), pesticides, pest/disease management
+- Weather effects on farming, irrigation methods
+- Farmer Producer Organisations (FPO), cooperative selling
+
+Response rules:
+- Be concise and practical (3-6 sentences for simple Q, up to 10 for complex)
+- Use • bullet points for lists (not markdown dashes)
+- Use relevant emojis naturally: 🌾 🍅 💰 📦 🌦️ 🏛️ ✅ ❌
+- If the user writes in Hindi (Devanagari), ALWAYS reply fully in Hindi
+- If user writes in English, reply in English
+- Give specific Indian price ranges (₹/kg or ₹/quintal) where relevant
+- Always be encouraging and actionable — farmers need real steps
+- Start responses directly, no filler like "Great question!" or "Certainly!"
+- When relevant, mention KisanMitra's free Crop Analyzer for personalized advice`;
+
+function toggleChat(){ document.getElementById('chatWin').classList.toggle('open'); }
+
+function addMsg(role, html) {
+  const c = document.getElementById('chatMsgs');
+  const timeStr = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'cmsg ' + role;
+  div.innerHTML = `<div class="cbubble">${html}</div><div class="ctime">${timeStr}</div>`;
+  c.appendChild(div);
+  c.scrollTop = c.scrollHeight;
+}
+
+function fmtText(t) {
+  return t
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/^• (.+)$/gm,'<div style="display:flex;gap:6px;margin:2px 0"><span>•</span><span>$1</span></div>')
+    .replace(/^(\d+)\. (.+)$/gm,'<div style="display:flex;gap:6px;margin:2px 0"><span>$1.</span><span>$2</span></div>')
+    .replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+}
+
+async function sendChat() {
+  if (isStreaming) return;
+  const inp = document.getElementById('chatInp');
+  const msg = inp.value.trim();
+  if (!msg) return;
+
+  inp.value = '';
+  inp.disabled = true;
+  document.getElementById('quickBtns').style.display = 'none';
+
+  // Show user message (escape HTML)
+  const safeMsg = msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  addMsg('user', safeMsg);
+
+  // Add to conversation history
+  chatHistory.push({ role: 'user', content: msg });
+  // Keep only last 12 turns to avoid token limits
+  if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+
+  // Show typing indicator
+  const typingRow = document.getElementById('typingRow');
+  typingRow.classList.add('vis');
+  document.getElementById('chatMsgs').scrollTop = 9999;
+
+  isStreaming = true;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory.slice(0, -1).concat([{ role:'user', content: msg }]),
+        stream: true,
+      })
+    });
+
+    typingRow.classList.remove('vis');
+
+    if (!response.ok) {
+      throw new Error('API error ' + response.status);
+    }
+
+    // Create streaming bubble
+    const c = document.getElementById('chatMsgs');
+    const timeStr = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.className = 'cmsg bot';
+    const bubbleInner = document.createElement('div');
+    bubbleInner.className = 'cbubble';
+    bubbleInner.innerHTML = '<span class="cursor-blink">▋</span>';
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'ctime';
+    timeDiv.textContent = timeStr;
+    bubbleDiv.appendChild(bubbleInner);
+    bubbleDiv.appendChild(timeDiv);
+    c.appendChild(bubbleDiv);
+
+    let fullText = '';
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // keep incomplete line
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]' || data === '') continue;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+            fullText += parsed.delta.text;
+            bubbleInner.innerHTML = fmtText(fullText) + '<span class="cursor-blink">▋</span>';
+            c.scrollTop = c.scrollHeight;
+          }
+        } catch(e) { /* skip malformed SSE */ }
+      }
+    }
+
+    // Final render — remove cursor
+    bubbleInner.innerHTML = fmtText(fullText);
+    c.scrollTop = c.scrollHeight;
+
+    // Store assistant reply in history
+    chatHistory.push({ role: 'assistant', content: fullText });
+
+  } catch (err) {
+    typingRow.classList.remove('vis');
+    // Graceful fallback to local knowledge base
+    addMsg('bot', fmtText(getLocalFallback(msg)));
+    chatHistory.push({ role: 'assistant', content: '(local fallback used)' });
+    console.warn('Annadata AI fallback used:', err.message);
+  }
+
+  isStreaming = false;
+  inp.disabled = false;
+  inp.focus();
+}
+
+// Local fallback when API unreachable
+function getLocalFallback(msg) {
+  const l = msg.toLowerCase();
+  if(l.includes('tomato')||l.includes('टमाटर')) return '🍅 Tomato prices: ₹20–35/kg at major mandis. Nashik APMC is Asia\'s largest tomato market.\n\nHarvest when 70–80% fruits turn red. Early morning harvesting (5–8 AM) reduces field heat damage significantly.';
+  if(l.includes('wheat')||l.includes('गेहूं')) return '🌾 Wheat MSP 2024–25: ₹2,275/quintal. Current market: ₹2,100–2,400/quintal.\n\nHarvest when grain moisture drops below 14%. Golden-yellow color + hard grain = ready to harvest.';
+  if(l.includes('onion')||l.includes('प्याज')) return '🧅 Onion prices vary widely (₹8–40/kg seasonally). Lasalgaon APMC is India\'s largest onion market.\n\nHarvest when 50% of tops fall naturally. Field cure 7–10 days before putting in storage.';
+  if(l.includes('potato')||l.includes('आलू')) return '🥔 Potato: ₹10–18/kg. Agra & Aligarh are key markets. Cold storage extends selling by 6–8 months.\n\nHarvest 10 days after vine dies. Cure at 15–20°C for 2 weeks before selling.';
+  if(l.includes('rice')||l.includes('paddy')||l.includes('चावल')) return '🍚 Rice MSP 2024–25: ₹2,300/quintal (Common), ₹2,320 (Grade A).\n\nHarvest when 80–85% grains turn golden. Dry paddy to 14% moisture before storage.';
+  if(l.includes('pm kisan')||l.includes('pmkisan')) return '🏛️ PM-KISAN: ₹6,000/year in 3 installments of ₹2,000 each.\n\n✅ All farmer families with cultivable land eligible\n❌ Excluded: Govt employees, income tax payers\n📍 Apply: pmkisan.gov.in or nearest CSC';
+  if(l.includes('fasal bima')||l.includes('insurance')||l.includes('pmfby')) return '🛡️ PMFBY: Premium is only 2% for Kharif, 1.5% for Rabi.\n\nCoverage up to full crop value. Apply via your bank before crop sowing deadline. Claim if actual yield < threshold yield.';
+  if(l.includes('kcc')||l.includes('kisan credit')) return '💳 Kisan Credit Card: Crop loans up to ₹3 lakh at 4% effective interest.\n\n✅ Apply at any bank/cooperative with land records\n✅ Includes accident insurance ₹50,000\n✅ Revolving credit — repay after harvest';
+  if(l.includes('spoilage')||l.includes('storage')||l.includes('preserve')) return '📦 Top 3 ways to cut spoilage:\n\n• Harvest early morning (5–8 AM) — FREE\n• Ventilated crates instead of gunny bags — ₹800–1,200\n• Pre-cool at cold storage before transit — ₹2,500–3,000\n\nThis cuts spoilage from 35% to ~12%.';
+  if(l.includes('mandi')||l.includes('market')||l.includes('sell')||l.includes('price')) return '🏪 Tips to get best mandi price:\n\n• Check e-NAM (enam.gov.in) for live prices before going\n• Sell 2–3 days after harvest while produce is fresh\n• Grade and sort before selling — good quality = 20–30% premium\n• Sell in morning when buyers are most active';
+  if(l.includes('soil')||l.includes('मिट्टी')) return '🧪 Get a free Soil Health Card from your nearest KVK (Krishi Vigyan Kendra).\n\nCard shows N, P, K, pH, micronutrients + crop-specific fertilizer doses. New card every 3 years. Apply at soilhealth.dac.gov.in';
+  return '🌾 I\'m Annadata AI — here to help with any farming question!\n\nAsk me about crop prices, harvest timing, storage tips, government schemes, or market advice. For personalized recommendations based on your specific crop and district, use the KisanMitra Analyzer above.';
+}
+
+function quickAsk(q) {
+  document.getElementById('chatInp').value = q;
+  sendChat();
+}
+
+// Blinking cursor CSS
+const cs = document.createElement('style');
+cs.textContent = `.cursor-blink{color:var(--leaf);animation:cblink .65s step-end infinite}@keyframes cblink{0%,100%{opacity:1}50%{opacity:0}}`;
+document.head.appendChild(cs);
+</script>
+</body>
+</html>
