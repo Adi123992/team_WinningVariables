@@ -1,22 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<form method="POST" action="/analyze">
-    <label>Crop:</label>
-    <input type="text" name="crop"><br>
-
-    <label>Location:</label>
-    <input type="text" name="location"><br>
-
-    <label>Storage Type:</label>
-    <select name="storage">
-        <option>Open</option>
-        <option>Warehouse</option>
-        <option>Cold Storage</option>
-    </select><br>
-
-    <label>Transit Days:</label>
-    <input type="number" name="transit"><br>
-
-    <button type="submit">Analyze</button>
-</form>
+<div class="container">
+    <h1>Farmer Information</h1>
+    
+    <form method="POST" action="/analyze">
+        <!-- Section 1: Crop Information -->
+        <div class="form-section">
+            <h2>Crop Information</h2>
+            
+            <div class="form-group">
+                <label for="crop">Crop Name</label>
+                <select name="crop" id="crop" required>
+                    <option value="">Select Crop</option>
+                    <option value="soyabean">Soyabean</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="cotton">Cotton</option>
+                    <option value="rice">Rice</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" placeholder="Enter your location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="harvest_date">Expected Harvest Date</label>
+                <input type="date" name="harvest_date" id="harvest_date" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="yield">Estimated Yield (Optional, in quintals)</label>
+                <input type="number" name="yield" id="yield" placeholder="e.g., 50">
+            </div>
+        </div>
+        
+        <button type="submit" class="main-button">Analyze & Recommend</button>
+    </form>
+</div>
 {% endblock %}

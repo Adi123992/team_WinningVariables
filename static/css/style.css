@@ -1,8 +1,182 @@
+/* Mobile-first design for AgriChain */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial;
-    margin: 40px;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.container {
+    width: 100%;
+    padding: 20px;
 }
 
 h1 {
-    color: green;
+    color: #2E7D32;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+h2 {
+    color: #2E7D32;
+    font-size: 24px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.main-button {
+    display: block;
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: background-color 0.3s;
+}
+
+.main-button:hover {
+    background-color: #45a049;
+}
+
+.form-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #2E7D32;
+    font-size: 16px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.result-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.result-title {
+    color: #2E7D32;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.result-content {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.price-highlight {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2E7D32;
+}
+
+.risk-medium {
+    color: #FF9800;
+    font-weight: bold;
+}
+
+.risk-high {
+    color: #F44336;
+    font-weight: bold;
+}
+
+.risk-low {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.back-link {
+    display: inline-block;
+    background-color: #757575;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    background-color: #616161;
+}
+
+.comparison {
+    background-color: #fff3cd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border-left: 3px solid #ffc107;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 28px;
+    }
+    
+    .main-button {
+        padding: 15px;
+        font-size: 18px;
+    }
 }
