@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Recommendation Result</h2>
+
+<p><strong>Expected Price:</strong> ₹{{ price }}</p>
+<p><strong>Spoilage Risk:</strong> {{ spoilage }}</p>
+<p><strong>Explanation:</strong> {{ explanation }}</p>
+
+<a href="/">Back to Home</a>
+{% endblock %}

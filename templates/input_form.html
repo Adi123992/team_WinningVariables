@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST" action="/analyze">
+    <label>Crop:</label>
+    <input type="text" name="crop"><br>
+
+    <label>Location:</label>
+    <input type="text" name="location"><br>
+
+    <label>Storage Type:</label>
+    <select name="storage">
+        <option>Open</option>
+        <option>Warehouse</option>
+        <option>Cold Storage</option>
+    </select><br>
+
+    <label>Transit Days:</label>
+    <input type="number" name="transit"><br>
+
+    <button type="submit">Analyze</button>
+</form>
+{% endblock %}
