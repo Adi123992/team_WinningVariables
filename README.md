@@ -1,6 +1,6 @@
 # 🌾 AgriChain – Farm-to-Market Intelligence Platform
 
-## 📌 Overview
+## Overview
 
 AgriChain is an AI-powered **Farm-to-Market Intelligence Platform** designed to help Indian farmers reduce post-harvest losses and maximize profit.
 
@@ -22,7 +22,7 @@ The platform delivers **clear, actionable guidance in plain language**, optimize
 
 ---
 
-## 🚩 Problem Statement
+## Problem Statement
 
 Farmers often lack access to integrated decision-support systems that combine:
 
@@ -42,7 +42,7 @@ AgriChain bridges this gap using **predictive analytics and explainable AI**.
 
 ---
 
-## 🎯 Key Objectives
+## Key Objectives
 
 - Recommend the optimal harvest window based on weather and price trends  
 - Identify the best mandi (market) for selling a given crop and region  
@@ -52,7 +52,7 @@ AgriChain bridges this gap using **predictive analytics and explainable AI**.
 
 ---
 
-## ⚙️ System Functionality
+## System Functionality
 
 ### 1️⃣ Market Intelligence Engine
 - Analyzes historical mandi price data  
@@ -86,19 +86,19 @@ This ensures transparency and builds farmer trust.
 
 ---
 
-## 🧩 Design Philosophy
+##  Design Philosophy
 
 The platform prioritizes accessibility and simplicity:
 
-- 📱 Mobile-friendly interface  
-- 🗣 Plain language outputs  
-- 📉 Minimal data literacy requirement  
-- ✅ Clear and concise recommendations  
-- 🚫 No dependency on complex visual analytics  
+-  Mobile-friendly interface  
+-  Plain language outputs  
+-  Minimal data literacy requirement  
+-  Clear and concise recommendations  
+-  No dependency on complex visual analytics  
 
 ---
 
-## 🛠 Technology Stack
+##  Technology Stack
 
 - Python  
 - Flask  
@@ -110,7 +110,7 @@ The platform prioritizes accessibility and simplicity:
 
 ---
 
-## 🌍 Expected Impact
+##  Expected Impact
 
 AgriChain aims to:
 
