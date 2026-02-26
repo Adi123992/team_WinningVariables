@@ -1,28 +1,35 @@
 from flask import Flask, render_template, request
 from price_model import predict_price, get_market_recommendations
 from spoilage_model import calculate_spoilage
-from explainability import generate_explanation
+from explainability import generate_dynamic_explanation
 import random
 
 app = Flask(__name__)
 
-def generate_harvest_recommendation(crop, harvest_date, location):
-    """Generate harvest timing recommendation"""
-    recommendations = [
-        "Harvest within 2 days.",
-        "Harvest within 5 days.",
-        "Harvest within 1 week.",
-        "Harvest now for best prices."
-    ]
+def harvest_decision(crop, harvest_date, location, weather_data, market_data):
+    """Generate harvest decision based on weather and market conditions"""
     
-    reasons = [
-        "Rainfall is expected in 3 days and current mandi prices are increasing.",
-        "Market prices are at their peak this week.",
-        "Weather conditions are optimal for harvesting.",
-        "Demand is high in nearby markets."
-    ]
+    # Weather-based urgency
+    if weather_data['rain_expected']:
+        recommendation = "Harvest within 2 days"
+        reason = "Rain is coming soon - protect your crop"
+    elif weather_data['avg_humidity'] > 75:
+        recommendation = "Harvest within 3 days"
+        reason = "High humidity can damage crops in storage"
+    else:
+        recommendation = "Harvest within 5 days"
+        reason = "Weather is good for harvesting"
     
-    return random.choice(recommendations), random.choice(reasons)
+    # Market consideration
+    if market_data['trend_percentage'] > 2:
+        reason += " and prices are rising"
+    elif market_data['trend_percentage'] < -2:
+        reason += " but prices are falling"
+    
+    return {
+        'recommendation': recommendation,
+        'reason': reason
+    }
 
 def generate_price_trend():
     """Generate price trend information"""
@@ -59,36 +66,30 @@ def input_form():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    # Get form data - basic crop information
+    # Get form data
     crop = request.form['crop']
     location = request.form['location']
     harvest_date = request.form.get('harvest_date', '')
     estimated_yield = request.form.get('yield', '')
-    
-    # Get new form fields
     storage_type = request.form.get('storage_type', 'open')
     transit_time = request.form.get('transit_time', '3')
-    soil_nitrogen = request.form.get('soil_nitrogen', '')
-    soil_moisture = request.form.get('soil_moisture', '')
     
-    # Generate basic recommendations
-    price = predict_price(crop)
-    
-    # Use actual storage and transit values from form
-    storage = storage_type
-    try:
-        transit = int(transit_time) if transit_time else 3
-    except:
-        transit = 3
-    
-    spoilage = calculate_spoilage(storage, transit)
-    explanation = generate_explanation(crop, price, spoilage)
-    
-    # Get market recommendations
+    # 1. Call price_model functions
     market_data = get_market_recommendations(crop)
     best_mandi = market_data['best_mandi']
     expected_price = market_data['latest_price']
+    trend_percentage = market_data['trend_percentage']
     all_markets = market_data['comparison_dict']
+    
+    # 2. Call weather analysis function
+    from spoilage_model import get_weather_analysis
+    weather_data = get_weather_analysis(location)
+    
+    # 3. Call harvest_decision
+    harvest_advice = harvest_decision(crop, harvest_date, location, weather_data, market_data)
+    
+    # 4. Call spoilage risk calculator
+    spoilage_result = calculate_spoilage(storage_type, int(transit_time), location)
     
     # Generate comparison text
     comparison_items = []
@@ -99,51 +100,33 @@ def analyze():
     
     # Calculate estimated revenue
     try:
-        yield_qty = float(estimated_yield) if estimated_yield else 50  # Default 50 quintals
+        yield_qty = float(estimated_yield) if estimated_yield else 50
     except:
         yield_qty = 50
     estimated_revenue = expected_price * yield_qty
     
-    # Generate harvest recommendation
-    harvest_recommendation, harvest_reason = generate_harvest_recommendation(crop, harvest_date, location)
-    
-    # Generate price trend
-    price_trend = generate_price_trend()
-    
-    # Determine risk level for styling
-    if spoilage < 30:
-        risk_level = 'low'
-        spoilage_text = f"Low ({spoilage}%)"
-    elif spoilage < 60:
-        risk_level = 'medium'
-        spoilage_text = f"Medium ({spoilage}%)"
-    else:
-        risk_level = 'high'
-        spoilage_text = f"High ({spoilage}%)"
-    
-    # Generate spoilage reason
-    spoilage_reasons = [
-        "High humidity and open storage increase risk after 3 days.",
-        "Current weather conditions favor spoilage.",
-        "Transit time is longer than recommended.",
-        "Storage conditions need improvement."
-    ]
-    spoilage_reason = random.choice(spoilage_reasons)
-    
     # Generate preservation suggestions
-    preservation_suggestions = generate_preservation_suggestions(storage, transit)
+    preservation_suggestions = generate_preservation_suggestions(storage_type, int(transit_time))
+    
+    # Generate dynamic explanation
+    explanation = generate_dynamic_explanation(
+        trend_percentage, 
+        spoilage_result['category'], 
+        weather_data['rain_expected'],
+        len(all_markets)  # Supply indicator (number of markets)
+    )
     
     return render_template('result.html',
-                           harvest_recommendation=harvest_recommendation,
-                           harvest_reason=harvest_reason,
+                           harvest_recommendation=harvest_advice['recommendation'],
+                           harvest_reason=harvest_advice['reason'],
                            best_mandi=best_mandi,
                            expected_price=expected_price,
                            estimated_revenue=estimated_revenue,
                            comparison=comparison,
-                           price_trend=price_trend,
-                           spoilage_risk=spoilage_text,
-                           risk_level=risk_level,
-                           spoilage_reason=spoilage_reason,
+                           price_trend=f"Price {'increasing' if trend_percentage > 0 else 'decreasing'} by {abs(trend_percentage)}% in next 5 days",
+                           spoilage_risk=f"{spoilage_result['category']} ({spoilage_result['percentage']}%)",
+                           risk_level=spoilage_result['category'].lower(),
+                           spoilage_reason=spoilage_result['explanation'],
                            preservation_suggestions=preservation_suggestions,
                            explanation=explanation)
 
