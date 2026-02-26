@@ -35,6 +35,35 @@
         </div>
     </div>
     
+    <!-- Section 4: Spoilage Risk -->
+    <div class="result-section">
+        <div class="result-title">Post-Harvest Risk</div>
+        <div class="result-content">
+            <p><strong>Spoilage Risk:</strong> <span class="risk-{{ risk_level }}">{{ spoilage_text }}</span></p>
+            <p><strong>Reason:</strong> {{ spoilage_reason }}</p>
+        </div>
+    </div>
+    
+    <!-- Section 5: Preservation Suggestions -->
+    <div class="result-section">
+        <div class="result-title">How to Reduce Loss</div>
+        <div class="result-content">
+            <ul>
+                {% for suggestion in preservation_suggestions %}
+                <li>{{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Section 6: Why This Recommendation? -->
+    <div class="result-section">
+        <div class="result-title">Explanation</div>
+        <div class="result-content">
+            <p>{{ explanation }}</p>
+        </div>
+    </div>
+    
     <a href="/" class="back-link">← Back to Home</a>
 </div>
 {% endblock %}

@@ -1,24 +1,10 @@
 from flask import Flask, render_template, request
-from price_model import predict_price
+from price_model import predict_price, get_market_recommendations
 from spoilage_model import calculate_spoilage
 from explainability import generate_explanation
 import random
 
 app = Flask(__name__)
-
-def get_market_recommendations(crop, location):
-    """Generate market recommendations based on crop and location"""
-    markets = {
-        'Nagpur': {'base_price': 5800, 'trend': 'increasing'},
-        'Pune': {'base_price': 5400, 'trend': 'stable'},
-        'Amravati': {'base_price': 5600, 'trend': 'increasing'},
-        'Mumbai': {'base_price': 6200, 'trend': 'stable'},
-        'Nashik': {'base_price': 5200, 'trend': 'decreasing'}
-    }
-    
-    # Select best market (simplified logic)
-    best_market = max(markets.items(), key=lambda x: x[1]['base_price'])
-    return best_market[0], best_market[1]['base_price'], markets
 
 def generate_harvest_recommendation(crop, harvest_date, location):
     """Generate harvest timing recommendation"""
@@ -99,13 +85,16 @@ def analyze():
     explanation = generate_explanation(crop, price, spoilage)
     
     # Get market recommendations
-    best_mandi, expected_price, all_markets = get_market_recommendations(crop, location)
+    market_data = get_market_recommendations(crop)
+    best_mandi = market_data['best_mandi']
+    expected_price = market_data['latest_price']
+    all_markets = market_data['comparison_dict']
     
     # Generate comparison text
     comparison_items = []
     for market, data in all_markets.items():
         if market != best_mandi:
-            comparison_items.append(f"{market}: ₹{data['base_price']}")
+            comparison_items.append(f"{market}: ₹{data['price']}")
     comparison = " | ".join(comparison_items)
     
     # Calculate estimated revenue
