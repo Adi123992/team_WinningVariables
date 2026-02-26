@@ -35,7 +35,47 @@
             </div>
         </div>
         
-        <button type="submit" class="main-button">Analyze & Recommend</button>
+        <!-- Section 2: Storage Details -->
+        <div class="form-section">
+            <h2>Storage Details</h2>
+            
+            <div class="form-group">
+                <label for="storage_type">Storage Type</label>
+                <select name="storage_type" id="storage_type" required>
+                    <option value="">Select Storage Type</option>
+                    <option value="open">Open storage</option>
+                    <option value="warehouse">Warehouse</option>
+                    <option value="cold">Cold storage</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="transit_time">Expected Transit Time (in days)</label>
+                <input type="number" name="transit_time" id="transit_time" placeholder="e.g., 3" min="1" required>
+            </div>
+        </div>
+        
+        <!-- Section 3: Soil Details (Optional) -->
+        <div class="form-section">
+            <h2>Soil Details (Optional)</h2>
+            
+            <div class="form-group">
+                <label for="soil_nitrogen">Soil Nitrogen</label>
+                <input type="number" name="soil_nitrogen" id="soil_nitrogen" placeholder="e.g., 50" step="0.1">
+            </div>
+            
+            <div class="form-group">
+                <label for="soil_moisture">Soil Moisture Level</label>
+                <select name="soil_moisture" id="soil_moisture">
+                    <option value="">Select Moisture Level</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="main-button">🌾 Analyze & Recommend</button>
     </form>
 </div>
 {% endblock %}

@@ -73,18 +73,27 @@ def input_form():
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-    # Get form data - basic crop information only
+    # Get form data - basic crop information
     crop = request.form['crop']
     location = request.form['location']
     harvest_date = request.form.get('harvest_date', '')
     estimated_yield = request.form.get('yield', '')
     
+    # Get new form fields
+    storage_type = request.form.get('storage_type', 'open')
+    transit_time = request.form.get('transit_time', '3')
+    soil_nitrogen = request.form.get('soil_nitrogen', '')
+    soil_moisture = request.form.get('soil_moisture', '')
+    
     # Generate basic recommendations
     price = predict_price(crop)
     
-    # Default values for storage and transit (not collected in this step)
-    storage = 'open'  # Default storage
-    transit = 3  # Default transit days
+    # Use actual storage and transit values from form
+    storage = storage_type
+    try:
+        transit = int(transit_time) if transit_time else 3
+    except:
+        transit = 3
     
     spoilage = calculate_spoilage(storage, transit)
     explanation = generate_explanation(crop, price, spoilage)
