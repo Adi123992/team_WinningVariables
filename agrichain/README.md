@@ -1,4 +1,4 @@
-# 🌾 AgriChain — Farm-to-Market Intelligence Platform
+# 🌾 KisanMitra — Farm-to-Market Intelligence Platform
 
 AI-powered advisory for Indian farmers: optimal harvest timing, best mandi to sell at, 
 post-harvest spoilage risk, and plain-language explanations — all from a single API call.
